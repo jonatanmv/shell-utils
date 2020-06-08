@@ -71,83 +71,144 @@ Echo $a
 ```
 
 ## Curly Braces {}
-We use braces to group things
+We use braces to group things. We can use braces like this: 
 
-Bash Builtins list
-Just type “enable”
-One very useful for real time is for example “time”
+```sh
+abc=Hello
+echo {$abc}DEF # {Hello}DEF
+echo ${abc}DEF # HelloDEF
+```
 
+*Indirection*:
 
-Startup settings
+```sh
+x=abc
+abd=def
+echo ${!x} # it will print "def"
+```
 
-.bash_profile
-Is read when Bash is invoked as a login shell
-We put here typically environment variables
+*Unset or Null Variables*:
 
+```sh
+${variable <OPR> value}
+```
+
+Example:
+
+```sh
+x=${var:-Default}
+:- # If var unset/null , return value; otherwise, return var value
+:= # If var unset/null , var is assigned value & returned
+:? # Display an error and exit script if var unset/null
+:+ if var unset/null return nothing; otherwise, return value
+```
+
+*String Operations*:
+
+```sh
+${var:offset} # value of var starting at offset
+${var:offset:len} # value of var starting at offset up to length len
+${#var} # length of var
+```
+
+Prefix/Postfix are usefull for processing filenames, paths:
+
+```sh
+${var#pre} # remove matching prefix
+${var%post} # remove sufix
+```
+
+## Bash Builtins
+You can check what it is enabled in your Bash just typing *enable*
+For example one very useful built-in for real time is: *time*
+
+## Startup settings and files
+
+**.bash_profile**
+Is a file read when Bash is invoked as a login shell
+We put here typically environment variables in it:
+
+```sh
 PATH=$PATH:/usr/local/bin
 export PATH
+```
 
-Check your profile:
+You can check your profile this way:
+
+```sh
 cat $HOME/.bash_profile
+```
 
-.bashrc
+**.bashrc**
 Is executed when a new shell is started
-We normally put here aliases (as they are not exported)
+We normally put here **aliases** (as they are not exported).
 
-Sourcing scripts
-source environment.sh
-This way we get the Shell executed the script in the shell’s own process instead of in a new process (as it would be when just runnig ./enviroment.sh)
- 
-Aliases
-Rename things of make command shortcuts
-You can get a list of all aliases by just “alias”
-A typicall use could be: 
+### Aliases samples
+Aliases is how we rename things of make command shortcuts. You can get a list of all aliases by just “alias”. A typicall use could be:
+```sh
 alias ls=“ls —color”
 alias ll=“ls -l”
 alias lr=“ls -ltr”
 alias copy=cp
-You also can unalias
-“unalias ls”  
+alias myserver='ssh -p 22 username@192.168.1.204' # My cloud server
+```
 
+You also can unalias, for example: ```sh unalias ls ```
+
+## Sourcing scripts
+source environment.sh
+This way we get the Shell executed the script in the shell’s own process instead of in a new process (as it would be when just runnig ./enviroment.sh)
  
-Echo Command
+## Echo Command
 
 -n —> don’t print a trailing newline
+
 -e —> enable backslash escaped chars like \n and \t
+
 -E —> disable backslash escaped chars in case they where enabled by default
 
-Samples
+```sh
+echo 'Warning Message!' >&2 # (output to stderr)
+```
 
-echo 'Warning Message!' >&2 (output to stderr)
-
-
-The Read command
+## Read command
 
 read a b —> Read first word into a and rest into b
 
 read a b c —> Read first word into a, second into b and the rest into c
 
-While Loops samples
 
+## While Loops
+
+```sh
 while
     read a b
 do
      echo a is $a and b is $b  
 done <data_file
+```
 
+```sh
 ls -l | while
 read a b c d e f g h i
 do echo owner of file $i is $c
 done
+```
 
+## For Loops
 
-For Loops samples
- 
+The structure is:
+
+```console
 for <var> in <list>
 do
 commands
 done
+```
 
+For example:
+
+```sh
 for i in {1..10}
 do
 echo $i
@@ -161,34 +222,36 @@ done
 for f in $(find . -name *.c)
 
 for f in $(find . -iname *4.1*)
+```
 
+## Bash Functions
 
-
-Bash Functions
-
+```sh
 function myfunction {
     echo "Hello !"
     return
 }
+```
 
-You can asign result of a function to a variable:
+You can asign the result of a function to a variable:
 
+```sh
 myvar=$(myfunction)
-
+```
 
 Also you can export a function to be available for other shells
 
+```sh
 export -f myfunction
+```
 
-The Exit command
+## Exit
 exit <VALUE> sets the exit status of the whole shell program (not just a function)
-is is represented by $? so after script execution you can read the exit status with echo $?
+is is represented by **$?** so after script execution you can read the exit with:
+	
+```sh status with echo $? ```
 
-
-
-
-
-Redirection and Pipes
+## Redirection and Pipes
 
 Normally processes have three files open:
 
@@ -196,6 +259,7 @@ Normally processes have three files open:
 
 We use them like this:
 
+```sh
 command > stdout_file 2> stderr_file < stdin_file
 
 command &> stdout_and_stderr_file (file is created or overwritten with stdout and stderr)
@@ -204,21 +268,23 @@ command &>> (appends stdout and stderr)
 command1 | command2 (command2 stdin comes from command1 stdout)
 
 command1 2>&1 | command2 (gets stdout and stderr from command1)
+```
 
-
-Here Documents: <<
-
+## Here Documents: <<
+```sh
 sort <<END
 car
 airplane
 skate
 bike
 END
+```
 
-Open and Close File Descriptors
+## Open and Close File Descriptors
 
 We use lsof -p PID to see what file descriptors for a process are open,
 
+```sh
 # $$ is shell's PID
 lsof -p $$	
 
@@ -227,31 +293,33 @@ exec 5< myfile
 
 # Opens file descriptor 5 for writing to file "myfile"
 exec 5> myfile
+```
 
+# Case statement
 
-The Case statement
-
+```sh
 case expression in
 pattern 1 )
     commands;;
 pattern 2 )
     commands;;
 esac
+```
 
 Sample:
 
-
+```sh
 case $answer in
 yes|YES|y|Y )
     echo "Yes";;
 n*|N* )
     echo "No";;
 esac
+```
 
+## If-Then-Else Statement
 
-
-The If-Then-Else Statement
-
+```sh
 if 
     comands # last result is used
 then
@@ -259,9 +327,11 @@ then
 else
     commands
 fi
+```
 
 Samples:
 
+```sh
 if 
     grep -q error myfile
 then
@@ -275,9 +345,11 @@ if [[ -f myfile ]]; then echo "file exists"; fi
 if test -f myfile; then echo "file exists"; fi
 
 if [[ $x -gt 5 ]]; then echo "It is greater"; fi
+```
 
-Test Operators
+**Test Operators**
 
+```console
 [[ expr1 -eq expr2 ]]
 [[ expr1 -ne expr2 ]]
 
@@ -299,7 +371,6 @@ Test Operators
 ((expr1 && expr2))
 ((expr1 || expr2))
 
-
 # Success if X is a directory
 test -d X
 
@@ -317,13 +388,13 @@ test -w X
 
 # Success you hace r permision on X
 test -r X
+```
 
-
-
-Aritmetic operations
+## Aritmetic operations
 
 Use in (( )) or with let
 
+```console
 id++ id-- ++id --id
 ! ** * / % % + -
 << >> <= >= < >
@@ -331,24 +402,24 @@ id++ id-- ++id --id
 expr?expr:expr
 = *= /= %= += -= <<= >>= &= ^= |=
 expr1 , expr2
-
+```
 
 Samples:
 
+```sh
 ((n=2**3 + 5))
+((y=n^4))  # (xor)
+```
 
-((y=n^4))  (xor)
+## Filters
 
+In Linux a program is a "filter" that reads from stdin and writes on stdout.
 
-Filters
+We use filters to combine input and output sequence of commands typically to get a report.
 
-in Linux a program is a "filter" that reads from stdin and writes on stdout
-
-We use filters to combine input and output sequence of commands to get a report
-
-
-head --> Prints the first lines of file or stdin
-tail --> Prints the last lines of file or stdin
+```sh
+head file.txt # Prints the first lines of file or stdin
+tail file.txt # Prints the last lines of file or stdin
 
 cat myfile | head -10 # First 10 lines of myfile
 cat myfile | tail -10 # Last 10 lines of myfile
@@ -356,128 +427,99 @@ cat myfile | tail -10 # Last 10 lines of myfile
 cat myfile | head -10 | tail -5 # Lines 6-10 of myfile
 cat myfile | head -5 | tail -3 # Lines 3-5 of myfile
 
-wc --< Word counts
-wc -l --> number of lines
+wc # Word counts
+wc -l # number of lines
+```
 
+## sed Command
 
+sed is a non-interactive stream editor. Works great as a filterand it is ideal for batch editing task applied to all lines in a file. Some examples using it to substitute strings:
 
-sed Command
-
-- sed is a non-interactive stream editor
-Works great as a filter
-Ideal for batch editing task applied to all lines in a file
-
-Samples:
-
-substitute
-
+```sh 
 date | sed 's/Jun/Junio/; s/Thu/Jueves/'
 sed 's/w/White/; s/b/Blue/'
 sed -e 's/[xX]/Y/' -e 's/b.*n/blue/'
 sed 's/[xX]/Y/; s/Y/Yellow/'
 sed '1,5p'
+```
 
-sed -f sedscript myfile.txt --> sedscript file contains the substitution
+You can put sed instructions in a file and use it as a sed script:
 
-sed '/alpha/s/beta/gamma/' --> If the line has alpha then substitute beta for gamma
+```sh
+sed -f sedscript myfile.txt # sedscript file contains the substitution
 
-sed '/apple/,/orange/d' --> find a line with apple on it then find a line with orange on it and then delete the sequence on lines from apple to orange
+sed '/alpha/s/beta/gamma/' # If the line has alpha then substitute beta for gamma
 
-sed '/Error/!s/old/new/' --> substitute only if line does not contain Error
+sed '/apple/,/orange/d' # find a line with apple on it then find a line with orange on it and then delete the sequence on lines from apple to orange
 
-cat myfile | sed -n "4,10p" --> Take lines 4 to 10 from myfile
+sed '/Error/!s/old/new/' # substitute only if line does not contain Error
 
+cat myfile | sed -n "4,10p" # Take lines 4 to 10 from myfile
+```
 
-The awk language
+## The awk language
 
-A pattern matching language
-Works as a filter
-Good for reporting
-Processes one line at a time as sed
-Brakes a line into fields, $1, $2, etc... 
-Fields delimited by values in variable FS, normally white space
-$0 is the entire line
+- A pattern matching language
+- Works as a filter
+- Good for reporting
+- Processes one line at a time as sed
+- Brakes a line into fields, $1, $2, etc... 
+- Fields delimited by values in variable FS, normally white space
+- $0 is the entire line
 
 Samples:
 
+```sh
 ps -el | \
 awk '/pts/||$8~/35/{printf("%5d %5d %s\n", $4, $5, $14)}' --> If line contains pts or field 8 contains 35 then we print some values
+```
 
-Here a awk script samples using END. END is a special key. indicates that when ending procesind the lines then execute the commands
+Here a awk script samples using END. END is a special key. Indicates that when ending procesing the lines then execute the commands:
 
+*sample.awk*:
+```sh
 #!/usr/bin/awk -f
 {szsum+=$9
 rssum+=$8}
 END{printf("RSS\tSZ\n%d\t%d\n",rssum,szsum)}
+```
 
-$ ps -l | ./awk1
+```sh
+$ ps -l | ./sample.awk
+```
 
+*words.awk*:
+```sh
 #!/usr/bin/awk -f
 {for (i=1;i<NF;i++)
     words[$i]++}
 END{printf("is=%d, ls=%d, the=%d\n", words["is"], words["ls"], words["the"])}
+```
 
+```sh
 $ man ls | col -b | awk -f words.awk
+```
 
+## Command line arguments 
 
-Command line arguments 
-
-Parameters (positional): $1, $2, $3, ...
-To reference multidigit we use {}, e.g., ${10}
-$0 is the path to the program itself
+- Parameters (positional): $1, $2, $3, ...
+- To reference multidigit we use {}, e.g., ${10}
+- $0 is the path to the program itself
 	echo Usage: $0 arg1 ...
-Shift moves the positional arguments, $2 into $1, $3 into $2, etc... We use this to loop and process arguments (allways $1) until there are no more arguments
+- Shift moves the positional arguments, $2 into $1, $3 into $2, etc... We use this to loop and process arguments (allways $1) until there are no more arguments
 
 Sample: 
 
+```sh
 #!/usr/bin/env bash
 while [[ $# -gt 0 ]]
 do
 	echo $1
 	shift
 done
+```
 
-Using {} 
-
-We can use braces like this: 
-	abc=Hello
-	echo {$abc}DEF --> {Hello}DEF
-	echo ${abc}DEF --> HelloDEF
-
-Indirection:
-	x=abc
-	abd=def
-	echo ${!x} # --> it will print "def"
-
-Unset or Null Variables
-
-${variable <OPR> value}
-
-Example
-x=${var:-Default}
-:- # If var unset/null , return value; otherwise, return var value
-:= # If var unset/null , var is assigned value & returned
-:? # Display an error and exit script if var unset/null
-:+ if var unset/null return nothing; otherwise, return value
-
-String Operations
-
-${var:offset} # value of var starting at offset
-
-${var:offset:len} # value of var starting at offset up to length len
-
-${#var} # length of var
-
-Prefix/Postfix are usefull for processing filenames, paths
-${var#pre} # remove matching prefix
-${var%post} # remove sufix
-
-
-
-
-
-
-Coprocesses
+## Coprocesses
 
 With this technology we create a script that works as a filter and use it as a background running process we can use with no need to launch it every time.
 
@@ -497,21 +539,7 @@ echo VALUE >&"${mycoproc[1]}
 
 cat <&"${mycoproc[0]}
 
+## More info
+Remember to check *info* and *man* to get more information and usefull documentation.
 
-Sample:
-
-# translate.sh
-
-
-
-
-Note: Look to info pages to more info
-
-
-
-
-
-
-
-
-
+# Enjoy !
