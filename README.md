@@ -137,11 +137,17 @@ Samples:
 file=/home/username/script.sh
 filename=`basename $file`
 echo $filename
+```
+```console
 script.sh
+```
+```
 filename_log=${filename%.sh}.log
 echo $filename_log
+```
+```console
 script.log
-
+```
 
 ## Bash Builtins
 You can check what it is enabled in your Bash just typing *enable*
