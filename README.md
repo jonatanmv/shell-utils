@@ -2,9 +2,14 @@
 Utils for Shell Scripting
 
 ## Documentation and References
-There is a lot of documentation about shell scripting language. For example one of the most common is **Bash**. You can find the manual in several formats (html, pdf, asci...) here:
+There is a lot of documentation about shell scripting language. For example one of the most common is **Bash**.
+You can find the manual in several formats (html, pdf, asci...) here:
 
 *Bash manual* --> https://www.gnu.org/software/bash/manual/
+
+And I also find interesting the *The Linux Documentation Project*:
+
+*TLDP (The Linux Documentation Project)* --> https://tldp.org/
 
 From the console and offline yo can also get documentation:
 
@@ -277,6 +282,17 @@ command1 2>&1 | command2 (gets stdout and stderr from command1)
 ```
 
 ## Here Documents: <<
+> The strangely named “here documents” let you use input/out redirection inside Bash scripts on Linux. They’re a great way to automate commands you need to run on a remote computer
+To use here-document in any bash script, you have to use the symbol *<<* followed by any *delimiting identifier* after any bash command and close the HereDoc by using the same delimiting identifier at the end of the text. The syntax of writing HereDoc is shown below.
+```
+Command << HeredocDelimiter    
+. . .
+. . .
+HeredocDelimiter
+```
+	
+And here an example:
+	
 ```
 sort <<END
 car
