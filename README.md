@@ -30,6 +30,8 @@ or typically
 #!/bin/bash
 ```
 
+- Sometimes for logging purposes you may need to access the current filename. You can do it like this: ```echo $0```
+
 - Make your script executable if you need to: ```sh chmod u+x filename.sh ```. You then can execute your file as *./filename.sh* If you don’t make it executable you still can execute it as *bash filename.sh*
 
 - Normally we use extension *.sh when naming a bash script
