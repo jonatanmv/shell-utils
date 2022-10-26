@@ -131,6 +131,18 @@ ${var#pre} # remove matching prefix
 ${var%post} # remove sufix
 ```
 
+Samples:
+
+```
+file=/home/username/script.sh
+filename=`basename $file`
+echo $filename
+script.sh
+filename_log=${filename%.sh}.log
+echo $filename_log
+script.log
+
+
 ## Bash Builtins
 You can check what it is enabled in your Bash just typing *enable*
 For example one very useful built-in for real time is: *time*
