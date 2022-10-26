@@ -8,7 +8,7 @@ There is a lot of documentation about shell scripting language. For example one 
 
 From the console and offline yo can also get documentation:
 
-```sh
+```
 man bash
 info bash
 ```
@@ -17,11 +17,11 @@ Info has some hyperlinks. You don’t use the mouse ut the keys for navigate thr
 ## Considerations on your script file
 
 - Start your file with first line as:
-```sh
+```
 #!/usr/bin/env bash
 ```
 or typically
-```sh
+```
 #!/bin/bash
 ```
 
@@ -33,23 +33,23 @@ or typically
 We have two areas to keep variables:
 - Enviroment (exported variables) ```export variable=“value”```
 We define this ones out of our script. We can do it in the terminal console before launching the script, for example:
-```sh
+```
 export MY_ENV_VAR=100
-sh my_script.sh # At this point inside the script we will be able to use the MY_ENV_VAR
+sh my_script.sh # --> At this point inside the script we will be able to use the MY_ENV_VAR
 ```
 We can also define this type of variables on the user profile for example in the file ".bash_profile" file in some systems.
 - Process variables that live in the current process
 
 ## Typeset
 Functions share variables, they don’t get a copy, so if you modify a variable in a *function {}* it is modified globally. If you need to create a variable in a function that will not ve abailable outside you can declare it with do it with **typeset**. Also is good to know that arithmetic is much faster for variables defined as integers.
-```sh
-typeset x —> We use this inside a function to make a variable private to the function 
-typeset -i x —> Integer
+```
+typeset x # —> We use this inside a function to make a variable private to the function 
+typeset -i x # —> Integer
 ```
 
 ## Declare
 Check your Bash version as if you have Bash v3 some declare command may not be supported
-```sh
+```
 declare -l lstring=“aBCDfe” # —> string, uppercase will be converted to lowercase
 declare -u ustring=“aBCDfe” # —> uppercase string
 declare -r readonly=“Readonly value” # —> Readonly
@@ -68,7 +68,7 @@ x=1; let x++; let x=2*x; let y=x**3
 ## Parentesis ()
 When you use parenthesis a new process is created for those command inside. This process go away you closes “()”
 Example:
-```sh
+```
 a=100
 (
 a=90; echo $a
@@ -79,7 +79,7 @@ Echo $a
 ## Curly Braces {}
 We use braces to group things. We can use braces like this: 
 
-```sh
+```
 abc=Hello
 echo {$abc}DEF # {Hello}DEF
 echo ${abc}DEF # HelloDEF
@@ -87,7 +87,7 @@ echo ${abc}DEF # HelloDEF
 
 *Indirection*:
 
-```sh
+```
 x=abc
 abd=def
 echo ${!x} # it will print "def"
@@ -95,13 +95,13 @@ echo ${!x} # it will print "def"
 
 *Unset or Null Variables*:
 
-```sh
+```
 ${variable <OPR> value}
 ```
 
 Example:
 
-```sh
+```
 x=${var:-Default}
 :- # If var unset/null , return value; otherwise, return var value
 := # If var unset/null , var is assigned value & returned
@@ -111,7 +111,7 @@ x=${var:-Default}
 
 *String Operations*:
 
-```sh
+```
 ${var:offset} # value of var starting at offset
 ${var:offset:len} # value of var starting at offset up to length len
 ${#var} # length of var
@@ -119,7 +119,7 @@ ${#var} # length of var
 
 Prefix/Postfix are usefull for processing filenames, paths:
 
-```sh
+```
 ${var#pre} # remove matching prefix
 ${var%post} # remove sufix
 ```
@@ -134,14 +134,14 @@ For example one very useful built-in for real time is: *time*
 Is a file read when Bash is invoked as a login shell
 We put here typically environment variables in it:
 
-```sh
+```
 PATH=$PATH:/usr/local/bin
 export PATH
 ```
 
 You can check your profile this way:
 
-```sh
+```
 cat $HOME/.bash_profile
 ```
 
@@ -151,7 +151,7 @@ We normally put here **aliases** (as they are not exported).
 
 ### Aliases samples
 Aliases is how we rename things of make command shortcuts. You can get a list of all aliases by just “alias”. A typicall use could be:
-```sh
+```
 alias ls=“ls —color”
 alias ll=“ls -l”
 alias lr=“ls -ltr”
@@ -173,7 +173,7 @@ This way we get the Shell executed the script in the shell’s own process inste
 
 -E —> disable backslash escaped chars in case they where enabled by default
 
-```sh
+```
 echo 'Warning Message!' >&2 # (output to stderr)
 ```
 
@@ -186,7 +186,7 @@ read a b c —> Read first word into a, second into b and the rest into c
 
 ## While Loops
 
-```sh
+```
 while
     read a b
 do
@@ -194,7 +194,7 @@ do
 done <data_file
 ```
 
-```sh
+```
 ls -l | while
 read a b c d e f g h i
 do echo owner of file $i is $c
@@ -205,7 +205,7 @@ done
 
 The structure is:
 
-```console
+```
 for <var> in <list>
 do
 commands
@@ -214,7 +214,7 @@ done
 
 For example:
 
-```sh
+```
 for i in {1..10}
 do
 echo $i
@@ -232,7 +232,7 @@ for f in $(find . -iname *4.1*)
 
 ## Bash Functions
 
-```sh
+```
 function myfunction {
     echo "Hello !"
     return
@@ -241,13 +241,13 @@ function myfunction {
 
 You can asign the result of a function to a variable:
 
-```sh
+```
 myvar=$(myfunction)
 ```
 
 Also you can export a function to be available for other shells
 
-```sh
+```
 export -f myfunction
 ```
 
@@ -255,7 +255,7 @@ export -f myfunction
 exit <VALUE> sets the exit status of the whole shell program (not just a function)
 is is represented by **$?** so after script execution you can read the exit with:
 	
-```sh status with echo $? ```
+``` status with echo $? ```
 
 ## Redirection and Pipes
 
@@ -265,7 +265,7 @@ Normally processes have three files open:
 
 We use them like this:
 
-```sh
+```
 command > stdout_file 2> stderr_file < stdin_file
 
 command &> stdout_and_stderr_file (file is created or overwritten with stdout and stderr)
@@ -277,7 +277,7 @@ command1 2>&1 | command2 (gets stdout and stderr from command1)
 ```
 
 ## Here Documents: <<
-```sh
+```
 sort <<END
 car
 airplane
@@ -290,7 +290,7 @@ END
 
 We use lsof -p PID to see what file descriptors for a process are open,
 
-```sh
+```
 # $$ is shell's PID
 lsof -p $$	
 
@@ -303,7 +303,7 @@ exec 5> myfile
 
 # Case statement
 
-```sh
+```
 case expression in
 pattern 1 )
     commands;;
@@ -314,7 +314,7 @@ esac
 
 Sample:
 
-```sh
+```
 case $answer in
 yes|YES|y|Y )
     echo "Yes";;
@@ -325,7 +325,7 @@ esac
 
 ## If-Then-Else Statement
 
-```sh
+```
 if 
     comands # last result is used
 then
@@ -337,7 +337,7 @@ fi
 
 Samples:
 
-```sh
+```
 if 
     grep -q error myfile
 then
@@ -355,7 +355,7 @@ if [[ $x -gt 5 ]]; then echo "It is greater"; fi
 
 **Test Operators**
 
-```console
+```
 [[ expr1 -eq expr2 ]]
 [[ expr1 -ne expr2 ]]
 
@@ -400,7 +400,7 @@ test -r X
 
 Use in (( )) or with let
 
-```console
+```
 id++ id-- ++id --id
 ! ** * / % % + -
 << >> <= >= < >
@@ -412,7 +412,7 @@ expr1 , expr2
 
 Samples:
 
-```sh
+```
 ((n=2**3 + 5))
 ((y=n^4))  # (xor)
 ```
@@ -423,7 +423,7 @@ In Linux a program is a "filter" that reads from stdin and writes on stdout.
 
 We use filters to combine input and output sequence of commands typically to get a report.
 
-```sh
+```
 head file.txt # Prints the first lines of file or stdin
 tail file.txt # Prints the last lines of file or stdin
 
@@ -441,7 +441,7 @@ wc -l # number of lines
 
 sed is a non-interactive stream editor. Works great as a filterand it is ideal for batch editing task applied to all lines in a file. Some examples using it to substitute strings:
 
-```sh 
+```
 date | sed 's/Jun/Junio/; s/Thu/Jueves/'
 sed 's/w/White/; s/b/Blue/'
 sed -e 's/[xX]/Y/' -e 's/b.*n/blue/'
@@ -451,7 +451,7 @@ sed '1,5p'
 
 You can put sed instructions in a file and use it as a sed script:
 
-```sh
+```
 sed -f sedscript myfile.txt # sedscript file contains the substitution
 
 sed '/alpha/s/beta/gamma/' # If the line has alpha then substitute beta for gamma
@@ -475,7 +475,7 @@ cat myfile | sed -n "4,10p" # Take lines 4 to 10 from myfile
 
 Samples:
 
-```sh
+```
 ps -el | \
 awk '/pts/||$8~/35/{printf("%5d %5d %s\n", $4, $5, $14)}' --> If line contains pts or field 8 contains 35 then we print some values
 ```
@@ -483,26 +483,26 @@ awk '/pts/||$8~/35/{printf("%5d %5d %s\n", $4, $5, $14)}' --> If line contains p
 Here a awk script samples using END. END is a special key. Indicates that when ending procesing the lines then execute the commands:
 
 *sample.awk*:
-```sh
+```
 #!/usr/bin/awk -f
 {szsum+=$9
 rssum+=$8}
 END{printf("RSS\tSZ\n%d\t%d\n",rssum,szsum)}
 ```
 
-```sh
+```
 $ ps -l | ./sample.awk
 ```
 
 *words.awk*:
-```sh
+```
 #!/usr/bin/awk -f
 {for (i=1;i<NF;i++)
     words[$i]++}
 END{printf("is=%d, ls=%d, the=%d\n", words["is"], words["ls"], words["the"])}
 ```
 
-```sh
+```
 $ man ls | col -b | awk -f words.awk
 ```
 
@@ -516,7 +516,7 @@ $ man ls | col -b | awk -f words.awk
 
 Sample: 
 
-```sh
+```
 #!/usr/bin/env bash
 while [[ $# -gt 0 ]]
 do
