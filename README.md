@@ -2,7 +2,7 @@
 Utils for Shell Scripting
 
 ## Documentation and References
-There is a lot of documentation there about shell scripting language. For example one of the most common is **Bash**. You can find the manual in several formats (html, pdf, asci...) here:
+There is a lot of documentation about shell scripting language. For example one of the most common is **Bash**. You can find the manual in several formats (html, pdf, asci...) here:
 
 *Bash manual* --> https://www.gnu.org/software/bash/manual/
 
@@ -31,12 +31,18 @@ or typically
 
 ## Variables, the two areas
 We have two areas to keep variables:
-- Enviroment (exported variables) ```export variable=“variable value”```
+- Enviroment (exported variables) ```export variable=“value”```
+We define this ones out of our script. We can do it in the terminal console before launching the script, for example:
+```sh
+export MY_ENV_VAR=100
+sh my_script.sh # At this point inside the script we will be able to use the MY_ENV_VAR
+```
+We can also define this type of variables on the user profile for example in the file ".bash_profile" file in some systems.
 - Process variables that live in the current process
 
 ## Typeset
 Functions share variables, they don’t get a copy, so if you modify a variable in a *function {}* it is modified globally. If you need to create a variable in a function that will not ve abailable outside you can declare it with do it with **typeset**. Also is good to know that arithmetic is much faster for variables defined as integers.
-```console
+```sh
 typeset x —> We use this inside a function to make a variable private to the function 
 typeset -i x —> Integer
 ```
